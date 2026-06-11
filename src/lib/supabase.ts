@@ -5,6 +5,9 @@ const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC
 
 // If env vars are missing, provide a lightweight mock so builds don't fail during static analysis or CI.
 // In production you should set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+// Prepare supabase client or a mock fallback.
+let _supabase: unknown;
+
 if (!url || !key) {
   // eslint-disable-next-line no-console
   console.warn(
@@ -13,15 +16,15 @@ if (!url || !key) {
 
   // Minimal mock implementation used only when env vars are not present.
   // It supports the chained call used by `getCourses()` and returns empty data.
-  const mock = {
+  _supabase = {
     from: (_: string) => ({
       select: (_cols: string) => ({
         order: async () => ({ data: [], error: null }),
       }),
     }),
   } as unknown;
-
-  export const supabase = mock as ReturnType<typeof createClient>;
 } else {
-  export const supabase = createClient(url, key);
+  _supabase = createClient(url, key);
 }
+
+export const supabase = _supabase as ReturnType<typeof createClient>;
