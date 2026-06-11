@@ -1,56 +1,323 @@
 @import "tailwindcss";
 
+/* ========================================
+   CSS Variables & Theme Configuration
+   ======================================== */
+
 :root {
+  /* Color System */
   --bg-900: #05060a;
   --bg-800: #0b0f16;
-  --panel: rgba(255,255,255,0.03);
+  --bg-700: #12161f;
+  --panel: rgba(255, 255, 255, 0.03);
+  --panel-hover: rgba(255, 255, 255, 0.06);
   --muted: #94a3b8;
+  --muted-dark: #64748b;
+  
+  /* Accent Colors */
+  --accent-primary: #6366f1;
+  --accent-primary-glow: rgba(99, 102, 241, 0.4);
+  --accent-secondary: #8b5cf6;
+  --accent-success: #10b981;
+  
+  /* Animation Timings */
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Layout */
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 80px;
+  --header-height: 64px;
+}
+
+/* Dark mode is default, no light mode needed */
+.dark {
+  color-scheme: dark;
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body, #__next {
   height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  @apply bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.02),transparent_20%),radial-gradient(ellipse_at_bottom_right,rgba(255,255,255,0.01),transparent_20%)] text-slate-100 antialiased;
+  @apply bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.02),transparent_20%),radial-gradient(ellipse_at_bottom_right,rgba(255,255,255,0.01),transparent_20%)];
   background-color: var(--bg-900);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #f1f5f9;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-optical-sizing: auto;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* ========================================
+   Custom Scrollbar
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  transition: background var(--transition-fast) var(--ease-smooth);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   Layout Components
+   ======================================== */
 
 .app-shell {
-  @apply min-h-screen bg-gradient-to-b from-[#06070b] via-[#071021] to-[#03040a] bg-[length:200%_200%];
+  @apply min-h-screen;
+  background: linear-gradient(135deg, #06070b 0%, #071021 50%, #03040a 100%);
+  background-attachment: fixed;
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
 }
 
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Dashboard background with enhanced depth */
+.dashboard-background {
+  position: relative;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(99, 102, 241, 0.03), transparent 50%),
+              radial-gradient(800px 400px at 90% 90%, rgba(139, 92, 246, 0.02), transparent 50%),
+              linear-gradient(180deg, rgba(2, 6, 23, 0.9), rgba(3, 4, 10, 0.95));
+  background-color: var(--bg-900);
+  background-attachment: fixed;
+}
+
+/* ========================================
+   Card & Glass Effects
+   ======================================== */
+
 .card-glow {
-  box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  box-shadow: 0 8px 32px rgba(2, 6, 23, 0.4), 
+              inset 0 1px 0 rgba(255, 255, 255, 0.02),
+              0 0 0 1px rgba(99, 102, 241, 0.05);
+  transition: all var(--transition-base) var(--ease-smooth);
+}
+
+.card-glow:hover {
+  box-shadow: 0 12px 48px rgba(99, 102, 241, 0.15),
+              inset 0 1px 0 rgba(255, 255, 255, 0.03),
+              0 0 0 1px rgba(99, 102, 241, 0.2);
 }
 
 .glass {
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  border: 1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 1rem;
 }
 
-/* dashboard background grain + layered gradients */
-.dashboard-background {
-  background-image: radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent 10%),
-    radial-gradient(800px 400px at 90% 90%, rgba(255,255,255,0.01), transparent 15%),
-    linear-gradient(180deg, rgba(2,6,23,0.8), rgba(3,4,10,0.9));
-  background-color: var(--bg-900);
+.glass-heavy {
+  background: rgba(15, 20, 30, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* subtle grain overlay */
+/* Glass backdrop for modals and mobile nav */
+.glass-backdrop {
+  background: rgba(8, 10, 16, 0.8);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* ========================================
+   Grain Texture Effect
+   ======================================== */
+
 .grain {
+  position: fixed;
   pointer-events: none;
   inset: 0;
-  position: absolute;
-  background-image: url('/images/grain.png');
-  opacity: 0.06;
+  z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px;
+  opacity: 0.04;
   mix-blend-mode: overlay;
+  animation: grainShift 8s steps(10) infinite;
 }
 
-/* glass backdrop helper for mobile nav */
-.glass-backdrop {
-  background: rgba(8,10,16,0.6);
-  backdrop-filter: blur(8px) saturate(120%);
-  border: 1px solid rgba(255,255,255,0.03);
+@keyframes grainShift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(5%, -3%); }
+  30% { transform: translate(-3%, 5%); }
+  40% { transform: translate(3%, 3%); }
+  50% { transform: translate(-2%, -2%); }
+  60% { transform: translate(2%, 4%); }
+  70% { transform: translate(-4%, 2%); }
+  80% { transform: translate(4%, -4%); }
+  90% { transform: translate(-1%, 1%); }
+}
+
+/* ========================================
+   Animation Utilities
+   ======================================== */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--accent-primary-glow);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--accent-primary-glow);
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ========================================
+   Loading Skeletons
+   ======================================== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.75rem;
+}
+
+/* ========================================
+   Bento Grid Layout Utilities
+   ======================================== */
+
+.bento-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ========================================
+   Responsive Utilities
+   ======================================== */
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* ========================================
+   Performance Optimizations
+   ======================================== */
+
+/* Hardware acceleration for animations */
+.accelerate {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .grain {
+    animation: none;
+  }
+  
+  .app-shell {
+    animation: none;
+  }
 }
