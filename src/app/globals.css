@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-900: #05060a;
+  --bg-800: #0b0f16;
+  --panel: rgba(255,255,255,0.03);
+  --muted: #94a3b8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body, #__next {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-[radial-gradient(ellipse_at_top_left,rgba(255,255,255,0.02),transparent_20%),radial-gradient(ellipse_at_bottom_right,rgba(255,255,255,0.01),transparent_20%)] text-slate-100 antialiased;
+  background-color: var(--bg-900);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+.app-shell {
+  @apply min-h-screen bg-gradient-to-b from-[#06070b] via-[#071021] to-[#03040a] bg-[length:200%_200%];
+}
+
+.card-glow {
+  box-shadow: 0 6px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* dashboard background grain + layered gradients */
+.dashboard-background {
+  background-image: radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent 10%),
+    radial-gradient(800px 400px at 90% 90%, rgba(255,255,255,0.01), transparent 15%),
+    linear-gradient(180deg, rgba(2,6,23,0.8), rgba(3,4,10,0.9));
+  background-color: var(--bg-900);
+}
+
+/* subtle grain overlay */
+.grain {
+  pointer-events: none;
+  inset: 0;
+  position: absolute;
+  background-image: url('/images/grain.png');
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
+
+/* glass backdrop helper for mobile nav */
+.glass-backdrop {
+  background: rgba(8,10,16,0.6);
+  backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.03);
 }
