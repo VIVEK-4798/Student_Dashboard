@@ -7,6 +7,7 @@ import CoursesView from "../views/CoursesView";
 import ActivityView from "../views/ActivityView";
 import SettingsView from "../views/SettingsView";
 import type { Course } from "../../types/course";
+import type { NavItemId } from "../sidebar/Sidebar";
 
 const variants = {
   initial: { opacity: 0, y: 20 },
@@ -14,7 +15,7 @@ const variants = {
   exit: { opacity: 0, y: -20 },
 };
 
-export default function ViewSwitcher({ activeView, courses }: { activeView: string; courses: Course[] }) {
+export default function ViewSwitcher({ activeView, courses }: { activeView: NavItemId; courses: Course[] }) {
   return (
     <AnimatePresence mode="wait">
       {activeView === "dashboard" && (

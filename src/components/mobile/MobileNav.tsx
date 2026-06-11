@@ -4,9 +4,9 @@ import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, type Variants, type Transition } from "framer-motion";
 import { Home, Book, Activity, Settings, Menu, X, Sparkles } from "lucide-react";
 
-// Types
-type NavId = "dashboard" | "courses" | "activity" | "settings";
+import type { NavItemId as NavId } from "../sidebar/Sidebar";
 
+// Types
 interface NavItem {
   id: NavId;
   label: string;

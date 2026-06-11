@@ -5,7 +5,7 @@ import { motion, type Variants, type Transition } from "framer-motion";
 import { getIconByName } from "../../lib/icons";
 
 // Types
-type NavItemId = "dashboard" | "courses" | "activity" | "settings";
+export type NavItemId = "dashboard" | "courses" | "activity" | "settings";
 
 interface NavItem {
   id: NavItemId;
